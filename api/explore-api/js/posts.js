@@ -6,7 +6,7 @@ const loadPost = () => {
 const displayPost = (data) => {
     const postContainer = document.getElementById("post-container");
     for (const user of data) {
-        console.log(user);
+        // console.log(user);
         const postDiv = document.createElement('div');
         postDiv.classList.add('post')
         postDiv.innerHTML = `
