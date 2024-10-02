@@ -18,21 +18,16 @@ The function tellJoke() below logs a funny message every 2 seconds and after 10 
      */
 
 
-function tellJoke( time) {
+function tellJoke() {
   console.log(
     "Why don't scientists trust atoms? Because they make up everything!"
     );
-    if (tellJoke === time) {
-        clearInterval(jokeInterval)
-    }
 }
 
 const jokeInterval = setInterval(tellJoke, 2000);
 
-// const stop = setTimeout((jokeInterval) => {
 
-   
-
-// }, 5000);
-   
-// console.log(stop(1000));
+setTimeout(() => {
+  
+    clearInterval(jokeInterval)
+  }, 10000);
