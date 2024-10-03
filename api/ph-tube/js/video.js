@@ -9,17 +9,38 @@ const loadCategoriesData = () => {
     "category_id": "1001",
     "category": "Music"
 }*/
+const removeActiveClass = () => {
+  const activeClass = document.getElementsByClassName('category-btn')
+  for (const btn of activeClass) {
+    btn.classList.remove('active')
+  }
+}
+const loadCategoryVideos = (id) => {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+        .then(res => res.json())
+    .then(data => {
+      removeActiveClass()
+      const activeBtn = document.getElementById(`btn-${id}`)
+      activeBtn.classList.add('active')
+      // console.log(activeBtn);
+      displayVideos(data.category)
+        })
+    .catch(err=> console.log("ERROR: ",err))
+}
 
 const displayCategories = (categories) => {
-    console.log(categories);
+    // console.log(categories);
     const categoriesContainer = document.getElementById("categories-container");
   categories.forEach((item) => {
-      const button = document.createElement('button');
-      button.classList.add('btn');
-      button.innerHTML = item.category;
-      categoriesContainer.append(button)
+    // console.log(item.category_id);
+    const buttonContainer = document.createElement('div');
+    buttonContainer.innerHTML = `
+    <button id="btn-${item.category_id}" onclick="loadCategoryVideos(${item.category_id})" class="btn category-btn">${item.category}</button>
+    `
+      categoriesContainer.append(buttonContainer)
   });
 };
+
 
 const loadVideosData = () => {
      fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
@@ -27,6 +48,7 @@ const loadVideosData = () => {
        .then((data) => displayVideos(data.videos))
        .catch((err) => console.log("ERROR: ", err));
 }
+
 /**
  * {
     "category_id": "1003",
@@ -61,9 +83,23 @@ function getTimeString(time) {
 // console.log(getTimeString(7865));
 
 const displayVideos = (videos) => {
-    const videoContainer = document.getElementById("video-container");
+  const videoContainer = document.getElementById("video-container");
+  videoContainer.innerHTML = ""
+  // console.log(videos.length)
+  if (videos.length === 0) {
+    videoContainer.innerHTML = `
+    <div class="h-[50vh] flex flex-col justify-center items-center text-center">
+    <img src="./assets/icon.png">
+    <h2>Oops!! Sorry, There is no content here</h2>
+    </div>
+    `
+    videoContainer.classList.remove('grid')
+    return
+  } else {
+    videoContainer.classList.add('grid')
+  }
     videos.forEach(videos => {
-        console.log(videos);
+        // console.log(videos);
         const div = document.createElement('div');
         div.classList="card card-compact ";
         div.innerHTML = `
