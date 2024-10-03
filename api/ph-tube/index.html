@@ -21,10 +21,10 @@
           <img src="./assets/Logo.png" alt="" />
         </div>
         <div>
-          <button class="btn hidden md:block">Sort by view</button>
+          <button id="sort" onclick="sortData()" class="btn hidden md:block">Sort by view</button>
         </div>
         <label class="input input-bordered flex items-center gap-2">
-          <input class="w-full" type="text" class="grow" placeholder="Search" />
+          <input id="search-input" class="w-full" type="text" class="grow" placeholder="Search" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -43,6 +43,24 @@
     </header>
     <main>
         <section id="video-container" class="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 py-10"></section>
+
+        <section>
+          <!-- Open the modal using ID.showModal() method -->
+<button class="btn hidden" onclick="customModal.showModal()">open modal</button>
+<dialog id="customModal" class="modal">
+  <div class="modal-box">
+    <div id="modal-content">
+
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+        </section>
     </main>
     <script src="./js/video.js"></script>
   </body>

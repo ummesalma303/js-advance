@@ -22,7 +22,6 @@ const loadCategoryVideos = (id) => {
       removeActiveClass()
       const activeBtn = document.getElementById(`btn-${id}`)
       activeBtn.classList.add('active')
-      // console.log(activeBtn);
       displayVideos(data.category)
         })
     .catch(err=> console.log("ERROR: ",err))
@@ -42,8 +41,8 @@ const displayCategories = (categories) => {
 };
 
 
-const loadVideosData = () => {
-     fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+const loadVideosData = (inputSearch='') => {
+     fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${inputSearch}`)
        .then((res) => res.json())
        .then((data) => displayVideos(data.videos))
        .catch((err) => console.log("ERROR: ", err));
@@ -80,6 +79,24 @@ function getTimeString(time) {
   )} minutes ${remainingSeconds} second ago`;
 }
 
+
+const loadDetails = async (videoId) => {
+  const res = await fetch(` https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`);
+  const data = await res.json();
+  displayDEtail(data.video);
+}
+
+
+const displayDEtail = (video) => {
+  const modalContent = document.getElementById("modal-content");
+  modalContent.innerHTML = `
+  <img src =${video.thumbnail}>
+  <p class="py-2">${video.description}</p>
+    `;
+  document.getElementById("customModal").showModal();
+  console.log(video);
+}
+
 // console.log(getTimeString(7865));
 
 const displayVideos = (videos) => {
@@ -107,9 +124,13 @@ const displayVideos = (videos) => {
     <img class="h-[180px] w-full object-cover"
       src=${videos.thumbnail}
       alt="Shoes" />
-    ${videos.others.posted_date.length === 0 ?"":`<span class="absolute bottom-0 right-0 bg-black text-white">${getTimeString(
-      videos.others.posted_date
-    )}</span>`}
+    ${
+      videos.others.posted_date.length === 0
+        ? ""
+        : `<span class="absolute bottom-0 right-0 bg-black text-white">${getTimeString(
+            videos.others.posted_date
+          )}</span>`
+    }
     
 
   </figure>
@@ -121,7 +142,7 @@ const displayVideos = (videos) => {
     }>
     </div>
     <div>
-    <h2 class="font-bold text-3xl">${videos.title}</h2>
+    <h2 class="font-bold text-xl">${videos.title}</h2>
     <div class="flex items-center ">
     <p>${videos.authors[0].profile_name}</p>
     
@@ -131,11 +152,10 @@ const displayVideos = (videos) => {
         : ""
     }
     </div>
-    <p></p>
     </div>
     </div>
     <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
+      <button onclick="loadDetails('${videos.video_id}')" class="btn bg-red-400 text-white">Buy Now</button>
     </div>
   </div>
         `;
@@ -143,5 +163,23 @@ const displayVideos = (videos) => {
     })
 }
 
-loadVideosData()
+document.getElementById("search-input").addEventListener('keyup', (e) => {
+  loadVideosData(e.target.value);
+});
+
+function sortData() {
+  fetch(
+    `https://openapi.programming-hero.com/api/phero-tube/videos`
+  )
+    .then((res) => res.json())
+    .then((data) => sortVideos(data.videos))
+    .catch((err) => console.log("ERROR: ", err));
+}
+function sortVideos(data) {
+  data.forEach(data => {
+    console.log(data.others.views);
+  })
+}
+loadVideosData();
+
 loadCategoriesData();
