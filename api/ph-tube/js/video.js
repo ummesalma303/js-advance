@@ -175,11 +175,17 @@ function sortData() {
     .then((data) => sortVideos(data.videos))
     .catch((err) => console.log("ERROR: ", err));
 }
-function sortVideos(data) {
-  data.forEach(data => {
-    console.log(data.others.views);
-  })
-}
+// function sortVideos(data) {
+//   let arr=[]
+//   data.forEach(data => {
+//     const number = data.others.views;
+//     const convert = parseInt(number);
+//     arr.push(convert)
+//     // console.log(num.split(0,-1));
+//   })
+//   console.log(arr.sort());
+  
+// }
 loadVideosData();
 
 loadCategoriesData();
